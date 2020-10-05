@@ -1,3 +1,7 @@
+<?php 
+    session_start();
+    unset($_SESSION['id']);
+?>
 <html>
 	<head>
 		<meta charset="utf-8" />

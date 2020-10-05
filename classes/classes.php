@@ -26,7 +26,7 @@
             $this->db = $this->db->conectarDB();
         }
 
-        public function mostrar($query,$tratar,$qnt = 0){
+        public function executarQuery($query,$tratar,$qnt = 0){
             $stmt = $this->db->query($query);
               foreach($tratar as $i => $dado){ //A query passada como parametro podera conter "variaveis", e relação variavel/valor sera passada como segundo parametro, tendo o nome da "variavel" ocupando o indice e seu respectivo valor  no posição correspondente(caso não exista variavel na query basta passar como parametro uma array vazia)
                 $stmt->bindValue($i,$dado);
@@ -57,7 +57,7 @@
         //verifica se o usuario esta cadastrado no banco
         public function verificarUsuario(){
             $crud= new Crud();
-            $verificar = $crud->mostrar("SELECT * FROM tb_usuarios WHERE email = '$this->email' AND senha =  '$this->senha' ",[],1);
+            $verificar = $crud->executarQuery("SELECT * FROM tb_usuarios WHERE email = '$this->email' AND senha =  '$this->senha' ",[],1);
             if(!(empty($verificar))){
                 $this->id = $verificar['id_usuario'];
                 $this->nome = $verificar['nome'];
@@ -74,11 +74,16 @@
     }       
 
     class Tarefa{
-        public $nome = null;
-        public $status = 'pendente';
+        private $nome = null;
+        private $status = 'pendente';
 
-        public function __construct($nome){
+        public function __construct($nome = null){
             $this->nome = $nome;
+        }
+        public function registrarTarefa($id){
+            $crud = new Crud();
+            $query = "INSERT INTO tb_tarefas(tarefa,id_usuario)VALUES('$this->nome',$id)";
+            $crud->executarQuery($query,[]);
         }
     }
 
