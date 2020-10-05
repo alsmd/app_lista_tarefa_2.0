@@ -1,4 +1,6 @@
-<?php require 'php/redirecionamento.php'?>
+<?php require 'php/redirecionamento.php';
+	  require 'classes/classes.php';
+?>
 <html>
 	<head>
 		<meta charset="utf-8" />
@@ -38,16 +40,31 @@
 							<div class="col">
 								<h4>Todas tarefas</h4>
 								<hr />
-
+								<?php 
+									$crud = new Crud();
+									$id = $_SESSION['id'];
+									$query = "
+										SELECT
+											t.id AS tarefa_id ,t.tarefa AS tarefa_nome ,s.id AS status_id
+										FROM
+											tb_usuarios AS u RIGHT JOIN tb_tarefas AS t ON (u.id_usuario = t.id_usuario) LEFT JOIN tb_status AS s ON(t.id_status = s.id) 
+										WHERE
+											u.id_usuario = :id ;
+									";
+									$tarefas = $crud->executarQuery($query,[':id' => $id]);
+									foreach($tarefas as $tarefa){
+										$status = $tarefa['status_id'] == 1 ? 'pendente' : 'realizado';
+										$cor = $status == 'pendente'?'text-info': 'text-success';
+								?>
 								<div class="row mb-3 d-flex align-items-center tarefa">
-									<div class="col-sm-9">Nome {status}</div>
+									<div class="col-sm-9"> <?= $tarefa['tarefa_nome']. "<span class=$cor> ($status)</span>" ?></div>
 									<div class="col-sm-3 mt-2 d-flex justify-content-between">
 										<a href=""> <i class="fas fa-trash-alt fa-lg text-danger"></i></a>
 										<a href=""><i class="fas fa-edit fa-lg text-info"></i></a> 
 										<a href=""><i class="fas fa-check-square fa-lg text-success"></i></a> 
 									</div>
 								</div>
-
+									<?php }?>
 								
 								
 							</div>

@@ -27,7 +27,7 @@
         }
 
         public function executarQuery($query,$tratar,$qnt = 0){
-            $stmt = $this->db->query($query);
+            $stmt = $this->db->prepare($query);
               foreach($tratar as $i => $dado){ //A query passada como parametro podera conter "variaveis", e relação variavel/valor sera passada como segundo parametro, tendo o nome da "variavel" ocupando o indice e seu respectivo valor  no posição correspondente(caso não exista variavel na query basta passar como parametro uma array vazia)
                 $stmt->bindValue($i,$dado);
             } 
