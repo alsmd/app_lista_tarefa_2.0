@@ -1,3 +1,15 @@
+<?php 
+  require "classes/classes.php";
+
+  $usuario = new Usuario('flavio@gmail.com',1234);
+
+  $teste = $usuario->verificarUsuario();
+
+  print_r($teste);
+
+?>
+
+
 <html>
 	<head>
 		<meta charset="utf-8" />
