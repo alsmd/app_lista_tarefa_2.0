@@ -57,13 +57,20 @@
         //verifica se o usuario esta cadastrado no banco
         public function verificarUsuario(){
             $crud= new Crud();
-            $verificar = $crud->mostrar("SELECT * FROM tb_usuarios WHERE email = '$this->email' AND senha =  $this->senha",[],1);
+            $verificar = $crud->mostrar("SELECT * FROM tb_usuarios WHERE email = '$this->email' AND senha =  '$this->senha' ",[],1);
             if(!(empty($verificar))){
+                $this->id = $verificar['id_usuario'];
+                $this->nome = $verificar['nome'];
                 return 1;
             }else{
                 return 0;
             }
         }
+
+        public function getId(){
+            return $this->id;
+        }
+
     }       
 
     class Tarefa{

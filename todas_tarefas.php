@@ -1,3 +1,4 @@
+<?php require 'php/redirecionamento.php'?>
 <html>
 	<head>
 		<meta charset="utf-8" />
@@ -16,7 +17,7 @@
 					<img src="img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
 					App Lista Tarefas
 				</a>
-				<a href="index.php" class="btn btn-outline-info">Sair</a>
+				<a href="php/sair.php" class="btn btn-outline-info">Sair</a>
 
 			</div>
 		</nav>
@@ -25,7 +26,7 @@
 			<div class="row">
 				<div class="col-sm-3 menu">
 					<ul class="list-group">
-						<li class="list-group-item"><a href="nova_tarefa.php">Tarefas pendentes</a></li>
+						<li class="list-group-item"><a href="pendentes.php">Tarefas pendentes</a></li>
 						<li class="list-group-item"><a href="nova_tarefa.php">Nova tarefa</a></li>
 						<li class="list-group-item active"><a href="#">Todas tarefas</a></li>
 					</ul>

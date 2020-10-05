@@ -1,15 +1,3 @@
-<?php 
-  require "classes/classes.php";
-
-  $usuario = new Usuario('flavio@gmail.com',1234);
-
-  $teste = $usuario->verificarUsuario();
-
-  print_r($teste);
-
-?>
-
-
 <html>
 	<head>
 		<meta charset="utf-8" />
@@ -47,13 +35,20 @@
               Login
             </div>
             <div class="card-body">
-              <form action="../scripts/valida_login.php" method="post">
+              <form action="php/valida_login.php" method="post">
                 <div class="form-group">
                   <input type="email" class="form-control" placeholder="E-mail" name="email">
                 </div>
                 <div class="form-group">
                   <input type="password" class="form-control" placeholder="Senha" name="senha"> 
                 </div>
+                  <?php if(isset($_GET['acesso']) && $_GET['acesso'] == 'negado'){?>
+                  <div class="text-danger pb-2">
+                  acesso negado
+                  
+                  </div>
+                  <?php }?>
+
                 <button class="btn btn-lg btn-info btn-block" type="submit">Entrar</button>
               </form>
             </div>
