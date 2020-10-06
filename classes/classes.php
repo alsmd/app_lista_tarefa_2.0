@@ -1,4 +1,27 @@
 <?php
+    function executarQuery($query,$tratar,$qnt = 0){
+        try{
+            $conection = new DB();
+            $conection = $conection->conectarDB();
+            $stmt = $conection->prepare($query);
+            foreach($tratar as $i => $dado){ //A query passada como parametro podera conter "variaveis", e relação variavel/valor sera passada como segundo parametro, tendo o nome da "variavel" ocupando o indice e seu respectivo valor  no posição correspondente(caso não exista variavel na query basta passar como parametro uma array vazia)
+            $stmt->bindValue($i,$dado);
+            } 
+            
+            $stmt->execute();
+            if($qnt == 1){ //podemos decidir se vamos retornar 1 ou todos os registros
+                $registros = $stmt->fetch();
+            }else{
+                $registros = $stmt->fetchAll();
+            }
+
+            return $registros; //retorna os registros que passaram pelo filtro
+
+        }catch(PDOException $e){
+            echo 'Erro: '. $e->getMessage();
+        }
+        
+    }
     class DB{
         private $host = 'localhost';
         private $db = 'php_com_pdo';
@@ -9,62 +32,37 @@
         public function conectarDB(){
             try{
                 $this->conection = new PDO("mysql:host=$this->host;dbname=$this->db",$this->login,$this->senha);
+                return $this->conection;
+
             }catch(PDOException $e){
                 echo 'Erro: '. $e->getMessage();
             }
-            
-
-            return $this->conection;
         }
-
-
-
-
     }
 
     class TarefaService{
         private $db;
-
-        public function __construct(){
+        private $tarefa;
+        public function __construct(Tarefa $tarefa = null){
             $this->db = new DB();
             $this->db = $this->db->conectarDB();
-            
+            $this->tarefa = $tarefa;
         }
-
-        public function executarQuery($query,$tratar,$qnt = 0){
-            try{
-                $stmt = $this->db->prepare($query);
-                foreach($tratar as $i => $dado){ //A query passada como parametro podera conter "variaveis", e relação variavel/valor sera passada como segundo parametro, tendo o nome da "variavel" ocupando o indice e seu respectivo valor  no posição correspondente(caso não exista variavel na query basta passar como parametro uma array vazia)
-                $stmt->bindValue($i,$dado);
-                } 
-                
-                $stmt->execute();
-                if($qnt == 1){ //podemos decidir se vamos retornar 1 ou todos os registros
-                    $registros = $stmt->fetch();
-                }else{
-                    $registros = $stmt->fetchAll();
-                }
-            }catch(PDOException $e){
-                echo 'Erro: '. $e->getMessage();
-            }
-            
-            return $registros; //retorna os registros que passaram pelo filtro
-        }
-
-        public function inserir($query ,$BL){
-            $this->executarQuery($query,$BL);
+        public function inserir(){
+            $query = "INSERT INTO tb_tarefas(tarefa,id_usuario)VALUES('{$this->tarefa->nome}',{$this->tarefa->id_usuario})";
+            executarQuery($query,[]);
         }
 
         public function atualizar($query,$BL){
-            $this->executarQuery($query,$BL);
+            executarQuery($query,$BL);
         }
 
         public function remover($query,$BL){
-            $this->executarQuery($query,$BL);
+            executarQuery($query,$BL);
         }
 
         public function recuperar($query,$BL){
-            $tarefas = $this->executarQuery($query,$BL);
+            $tarefas = executarQuery($query,$BL);
             return $tarefas;
         }
 
@@ -83,8 +81,7 @@
         }
         //verifica se o usuario esta cadastrado no banco
         public function verificarUsuario(){
-            $crud= new Crud();
-            $verificar = $crud->executarQuery("SELECT * FROM tb_usuarios WHERE email = '$this->email' AND senha =  '$this->senha' ",[],1);
+            $verificar = executarQuery("SELECT * FROM tb_usuarios WHERE email = '$this->email' AND senha =  '$this->senha' ",[],1);
             if(!(empty($verificar))){
                 $this->id = $verificar['id_usuario'];
                 $this->nome = $verificar['nome'];
@@ -117,16 +114,5 @@
         public function __set($atr,$valor){
             $this->$atr = $valor;
         }
-        
-        
-       
-        
-
-
     }
-
-
-    
-
-
 ?>

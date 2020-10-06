@@ -1,4 +1,4 @@
-<?php require 'php/redirecionamento.php';
+<?php require 'php/redirecionamento.php'; 
 	$acesso = null;
 	if(isset($_GET['tarefa'])){
 		$acesso = ($_GET['tarefa'] == "cadastrada")?true:false;
@@ -26,7 +26,7 @@
 					<img src="img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
 					App Lista Tarefas
 				</a>
-				<a href="php/sair.php" class="btn btn-outline-info">Sair</a>
+				<a href="php/controller.php?acao=sair" class="btn btn-outline-info">Sair</a>
 			</div>
 		</nav>
 
@@ -47,7 +47,7 @@
 								<h4>Nova tarefa</h4>
 								<hr />
 
-								<form method="post" action="php/cadastrar_tarefa.php">
+								<form method="post" action="php/controller.php?acao=inserir">
 									<div class="form-group">
 										<label>Descrição da tarefa:</label>
 										<input type="text" class="form-control" placeholder="Exemplo: Lavar o carro" name="nome" required>
@@ -79,7 +79,7 @@
 				não esqueça de conclui-la ;3
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-success" data-dismiss="modal">Voltar</button>
+				<button type="button" class="btn btn-success" data-dismiss="modal" onclick="redirecionar()">Voltar</button>
 			</div>
 			</div>
 		</div>
@@ -90,6 +90,10 @@
 		if(acesso){
 			$("#modalRegistraDespesa").modal('show');
 		}
+		function redirecionar(){
+			window.location.href ="nova_tarefa.php";
+		}
+		
 	
 	</script>
 
