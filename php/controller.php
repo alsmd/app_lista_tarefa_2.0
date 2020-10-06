@@ -1,5 +1,7 @@
 <?php 
     require '../classes/classes.php';
+
+    //INSERIR TAREFA
     function inserir(){
 
             session_start();
@@ -12,6 +14,9 @@
         
             header('Location: ../nova_tarefa.php?tarefa=cadastrada');
     }
+
+    //DELETAR TAREFA
+    
     function apagar(){
         session_start();
         $tarefa = new Tarefa();
@@ -35,6 +40,8 @@
         header("Location: ../pendentes.php");
         }
     }
+
+    //CONCLUIR TAREFA
 
     function concluir(){
         session_start();
@@ -64,6 +71,7 @@
         }
     }
 
+    //ENCERRAR SESSÃO
 
     function sair(){
         session_start();
@@ -72,6 +80,8 @@
        header('Location: ../index.php');
     }
 
+
+    //VALIDAR LOGIN
     function valida_login(){
         $usuario = new Usuario($_POST['email'],$_POST['senha']);
         $acesso = $usuario->verificarUsuario();
@@ -87,10 +97,19 @@
         }
     }
 
-    function redirecionar(){
-        session_start();
-        if(!(isset($_SESSION['id']))){
-            header('Location: index.php?acesso=negado');
+
+        //ATUALIZAR TAREFA
+
+    function atualizar(){
+        $tarefa = new Tarefa();
+        $tarefa->nome = $_POST['tarefa'];
+        $tarefa->id = $_POST['id'];
+        $tarefa_service = new TarefaService($tarefa);
+        $tarefa_service->atualizar("UPDATE tb_tarefas SET tarefa = '$tarefa->nome' WHERE id = $tarefa->id",[]);
+        if(isset($_GET['src']) && $_GET['src'] == 'pendentes'){
+            header("Location: ../pendentes.php");
+        }else{
+            header("Location: ../todas_tarefas.php");
         }
     }
     //executa a função correspondente com a acao desejada
@@ -110,8 +129,8 @@
         case 'logar':
             valida_login();
         break;
-        case 'redirecionar':
-            redirecionar();
+        case 'atualizar':
+            atualizar();
         break;
     }
 

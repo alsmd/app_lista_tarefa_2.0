@@ -10,6 +10,8 @@
 		<link rel="stylesheet" href="css/estilo.css">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+		<script src="editar.js"></script>
+
 	</head>
 
 	<body>
@@ -51,10 +53,10 @@
 										$cor = $status == 'pendente'?'text-info': 'text-success';
 								?>
 								<div class="row mb-3 d-flex align-items-center tarefa">
-									<div class="col-sm-9"> <?= $tarefa['tarefa_nome']. "<span class=$cor> ($status)</span>" ?></div>
+									<div class="col-sm-9" id="<?=$tarefa['tarefa_id'] ?>"> <?= $tarefa['tarefa_nome']. "<span class=$cor> ($status)</span>" ?></div>
 									<div class="col-sm-3 mt-2 d-flex justify-content-between">
 										<a href="php/controller.php?acao=apagar&&tarefa_id=<?=$tarefa['tarefa_id'].'&&pag=pendentes'?>"> <i class="fas fa-trash-alt fa-lg text-danger"></i></a>
-										<a href=""><i class="fas fa-edit fa-lg text-info"></i></a> 
+										<a href="#" onclick="editar(<?=$tarefa['tarefa_id']?>,'pendentes')"><i class="fas fa-edit fa-lg text-info"></i></a> 
 										<a href="php/controller.php?acao=concluir&&tarefa_id=<?=$tarefa['tarefa_id'].'&&status_id='.$tarefa['status_id'].'&&pag=pendentes' ?>"><i class="fas fa-check-square fa-lg text-success"></i></a> 
 									</div>
 								</div>
