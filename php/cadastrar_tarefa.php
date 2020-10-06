@@ -1,8 +1,10 @@
 <?php
     require '../classes/classes.php';
     session_start();
-    $tarefa = new tarefa($_POST['nome']);
-    $tarefa->registrarTarefa($_SESSION['id']);
+    $tarefa = new tarefa();
+    $tarefa->nome = $_POST['nome'];
+    $tarefa->id_usuario = $_SESSION['id'];
+    $tarefa->inserir();
     header('Location: ../nova_tarefa.php?tarefa=cadastrada');
 ?>
 

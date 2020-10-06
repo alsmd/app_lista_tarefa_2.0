@@ -1,4 +1,6 @@
-<?php require 'php/redirecionamento.php'?>
+<?php require 'php/redirecionamento.php';
+	   require 'classes/classes.php';
+?>
 <html>
 	<head>
 		<meta charset="utf-8" />
@@ -38,15 +40,30 @@
 							<div class="col">
 								<h4>Tarefas pendentes</h4>
 								<hr />
-
+								<?php 
+									$tarefa = new Tarefa();
+									$tarefa->id = $_SESSION['id'];
+									$tarefas = $tarefa->recuperar("
+									SELECT
+										t.id AS tarefa_id ,t.tarefa AS tarefa_nome ,s.id AS status_id
+									FROM
+										tb_usuarios AS u RIGHT JOIN tb_tarefas AS t ON (u.id_usuario = t.id_usuario) LEFT JOIN tb_status AS s ON(t.id_status = s.id) 
+									WHERE
+									u.id_usuario = :id AND t.id_status = 1 ;
+								");
+									foreach($tarefas as $tarefa){
+										$status = $tarefa['status_id'] == 1 ? 'pendente' : 'realizado';
+										$cor = $status == 'pendente'?'text-info': 'text-success';
+								?>
 								<div class="row mb-3 d-flex align-items-center tarefa">
-									<div class="col-sm-9">  </div>
+									<div class="col-sm-9"> <?= $tarefa['tarefa_nome']. "<span class=$cor> ($status)</span>" ?></div>
 									<div class="col-sm-3 mt-2 d-flex justify-content-between">
-										<a href=""> <i class="fas fa-trash-alt fa-lg text-danger"></i></a>
+										<a href="php/apagar_tarefa.php?tarefa_id=<?=$tarefa['tarefa_id']?>"> <i class="fas fa-trash-alt fa-lg text-danger"></i></a>
 										<a href=""><i class="fas fa-edit fa-lg text-info"></i></a> 
-										<a href=""><i class="fas fa-check-square fa-lg text-success"></i></a> 
+										<a href="php/concluir_tarefa.php?tarefa_id=<?=$tarefa['tarefa_id'].'&&status_id='.$tarefa['status_id'].'&&pag=pendentes' ?>"><i class="fas fa-check-square fa-lg text-success"></i></a> 
 									</div>
 								</div>
+									<?php }?>
 
 								
 

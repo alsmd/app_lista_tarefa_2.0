@@ -85,46 +85,55 @@
     }       
 
     class Tarefa{
-        private $nome = null;
-        private $status;
-        private $crud;
         private $id = null;
-        public function __construct($nome = null,$id = null){
-            $this->nome = $nome;
-            $this->id = $id;
+        private $nome = null;
+        private $id_status;
+        private $id_usuario;
+        private $crud;
+        public function __construct(){
             $this->crud = new Crud();
         }
-        public function setStatus($status){
-            if($status == 1 || $status == 2){
-                $status = $status == 1? 2 : 1;
-                $this->status = $status;
+        public function trocarStatus(){
+            if($this->id_status == 1 || $this->id_status == 2){
+                $this->id_status = $this->id_status == 1? 2 : 1;
             }
         }
-
-        public function registrarTarefa($id){
-            $query = "INSERT INTO tb_tarefas(tarefa,id_usuario)VALUES('$this->nome',$id)";
+        public function __get($atr){
+            return $this->$atr;
+        }
+        public function __set($atr,$valor){
+            $this->$atr = $valor;
+        }
+        public function inserir(){
+            $query = "INSERT INTO tb_tarefas(tarefa,id_usuario)VALUES('$this->nome',$this->id_usuario)";
             $this->crud->executarQuery($query,[]);
         }
-        public function apagarTarefa($id_usuario){
+        public function remover(){
             $query = "
                 DELETE FROM
                     tb_tarefas
                 WHERE 
                     id_usuario = :id AND id= $this->id;
             ";
-            $this->crud->executarQuery($query,[':id' => $id_usuario]);
+            $this->crud->executarQuery($query,[':id' => $this->id_usuario]);
         }
-        public function concluirTarefa($id_usuario){
+        public function atualizar(){
             $query = "
                 UPDATE
                     tb_tarefas
                 SET
-                    id_status = $this->status
+                    id_status = $this->id_status
                 WHERE 
                     id_usuario = :id AND id= $this->id;
             ";
-            $this->crud->executarQuery($query,[':id' => $id_usuario]);
+            $this->crud->executarQuery($query,[':id' => $this->id_usuario]);
         }
+        public function recuperar($query){
+            $crud = new Crud();
+            $tarefas = $crud->executarQuery($query,[':id' => $this->id]);
+            return $tarefas;
+        }
+
 
     }
 

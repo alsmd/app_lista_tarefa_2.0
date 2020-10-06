@@ -41,17 +41,16 @@
 								<h4>Todas tarefas</h4>
 								<hr />
 								<?php 
-									$crud = new Crud();
-									$id = $_SESSION['id'];
-									$query = "
-										SELECT
-											t.id AS tarefa_id ,t.tarefa AS tarefa_nome ,s.id AS status_id
-										FROM
-											tb_usuarios AS u RIGHT JOIN tb_tarefas AS t ON (u.id_usuario = t.id_usuario) LEFT JOIN tb_status AS s ON(t.id_status = s.id) 
-										WHERE
-											u.id_usuario = :id ;
-									";
-									$tarefas = $crud->executarQuery($query,[':id' => $id]);
+									$tarefa = new Tarefa();
+									$tarefa->id = $_SESSION['id'];
+									$tarefas = $tarefa->recuperar("
+									SELECT
+										t.id AS tarefa_id ,t.tarefa AS tarefa_nome ,s.id AS status_id
+									FROM
+										tb_usuarios AS u RIGHT JOIN tb_tarefas AS t ON (u.id_usuario = t.id_usuario) LEFT JOIN tb_status AS s ON(t.id_status = s.id) 
+									WHERE
+										u.id_usuario = :id ;
+								");
 									foreach($tarefas as $tarefa){
 										$status = $tarefa['status_id'] == 1 ? 'pendente' : 'realizado';
 										$cor = $status == 'pendente'?'text-info': 'text-success';
@@ -61,7 +60,7 @@
 									<div class="col-sm-3 mt-2 d-flex justify-content-between">
 										<a href="php/apagar_tarefa.php?tarefa_id=<?=$tarefa['tarefa_id']?>"> <i class="fas fa-trash-alt fa-lg text-danger"></i></a>
 										<a href=""><i class="fas fa-edit fa-lg text-info"></i></a> 
-										<a href="php/concluir_tarefa.php?tarefa_id=<?=$tarefa['tarefa_id'].'&&status_id='.$tarefa['status_id']?>"><i class="fas fa-check-square fa-lg text-success"></i></a> 
+										<a href="php/concluir_tarefa.php?tarefa_id=<?=$tarefa['tarefa_id'].'&&status_id='.$tarefa['status_id'].'&&pag=todas'?>"><i class="fas fa-check-square fa-lg text-success"></i></a> 
 									</div>
 								</div>
 									<?php }?>
