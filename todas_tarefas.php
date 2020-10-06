@@ -59,9 +59,9 @@
 								<div class="row mb-3 d-flex align-items-center tarefa">
 									<div class="col-sm-9"> <?= $tarefa['tarefa_nome']. "<span class=$cor> ($status)</span>" ?></div>
 									<div class="col-sm-3 mt-2 d-flex justify-content-between">
-										<a href=""> <i class="fas fa-trash-alt fa-lg text-danger"></i></a>
+										<a href="php/apagar_tarefa.php?tarefa_id=<?=$tarefa['tarefa_id']?>"> <i class="fas fa-trash-alt fa-lg text-danger"></i></a>
 										<a href=""><i class="fas fa-edit fa-lg text-info"></i></a> 
-										<a href=""><i class="fas fa-check-square fa-lg text-success"></i></a> 
+										<a href="php/concluir_tarefa.php?tarefa_id=<?=$tarefa['tarefa_id'].'&&status_id='.$tarefa['status_id']?>"><i class="fas fa-check-square fa-lg text-success"></i></a> 
 									</div>
 								</div>
 									<?php }?>
