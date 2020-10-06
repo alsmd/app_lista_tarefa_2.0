@@ -42,20 +42,10 @@
 								<hr />
 								<?php 
 									$tarefa = new Tarefa();
-									$tarefa_service = new TarefaService();
-
 									$tarefa->id = $_SESSION['id'];
+									$tarefa_service = new TarefaService($tarefa,);
 
-									$query = "
-										SELECT
-											t.id AS tarefa_id ,t.tarefa AS tarefa_nome ,s.id AS status_id
-										FROM
-											tb_usuarios AS u RIGHT JOIN tb_tarefas AS t ON (u.id_usuario = t.id_usuario) LEFT JOIN tb_status AS s ON(t.id_status = s.id) 
-										WHERE
-										u.id_usuario = :id AND t.id_status = 1 ;
-										";
-
-									$tarefas = $tarefa_service->recuperar($query,[':id' => $tarefa->id]);
+									$tarefas = $tarefa_service->recuperar("u.id_usuario = :id AND t.id_status = 1",[':id' =>$tarefa->id]);
 									foreach($tarefas as $tarefa){
 										$status = $tarefa['status_id'] == 1 ? 'pendente' : 'realizado';
 										$cor = $status == 'pendente'?'text-info': 'text-success';

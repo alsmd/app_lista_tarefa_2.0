@@ -61,8 +61,16 @@
             executarQuery($query,$BL);
         }
 
-        public function recuperar($query,$BL){
-            $tarefas = executarQuery($query,$BL);
+        public function recuperar($where,$BL){
+            $query = "
+                SELECT
+                    t.id AS tarefa_id ,t.tarefa AS tarefa_nome ,s.id AS status_id
+                FROM
+                    tb_usuarios AS u RIGHT JOIN tb_tarefas AS t ON (u.id_usuario = t.id_usuario) LEFT JOIN tb_status AS s ON(t.id_status = s.id) 
+                WHERE
+                $where
+                ";
+                $tarefas = executarQuery($query,$BL);
             return $tarefas;
         }
 
